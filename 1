@@ -1,0 +1,92 @@
+1) car price
+mileage=[100,200,300]
+price=[0,1,2]
+m=(price[1]-price[0])/(mileage[1]-mileage[0])
+b=price[0]-m*mileage[0]
+new_mileage=700
+predicted_price=m*new_mileage+b
+print(predicted_price)
+
+
+
+2)S-ALGORITHM
+data = [
+    ['Sunny', 'Warm', 'Normal', 'Strong', 'Warm', 'Same', 'Yes'],
+    ['Sunny', 'Warm', 'High', 'Strong', 'Warm', 'Same', 'Yes'],
+    ['Rainy', 'Cold', 'High', 'Strong', 'Warm', 'Change', 'No'],
+    ['Sunny', 'Warm', 'High', 'Strong', 'Cool', 'Change', 'Yes']
+]
+
+# Initialize most specific hypothesis
+h = ['ϕ'] * 6
+
+for row in data:
+    if row[-1] == 'Yes':
+        for i in range(6):
+            if h[i] == 'ϕ': h[i] = row[i]
+            elif h[i] != row[i]: h[i] = '?'
+
+print("Most specific hypothesis:", h)
+
+
+
+3) LOGISTIC REGRESSION
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.model_selection import train_test_split
+
+np.random.seed(42)
+X = 2 * np.random.rand(100, 1) 
+y = 4 + 3 * X + np.random.randn(100, 1)  
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+print("Intercept:", model.intercept_[0])
+print("Slope:", model.coef_[0][0])
+print("Mean Squared Error:", mse)
+print("R² Score:", r2)
+
+plt.scatter(X_test, y_test, color='blue', label='Actual data')
+plt.plot(X_test, y_pred, color='red', linewidth=2, label='Regression line')
+plt.title('Linear Regression: Actual vs Predicted')
+plt.xlabel('X')
+plt.ylabel('y')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+
+4)IRIS
+
+
+data = [
+    [5.1, 3.5, 1.4, 0.2, 1],
+    [7.0, 3.2, 4.7, 1.4, -1],
+    [5.4, 3.9, 1.7, 0.4, 1],
+    [6.4, 3.2, 4.5, 1.5, -1]
+]
+w = [0, 0, 0, 0]
+b = 0
+lr = 0.1 
+for epoch in range(10):
+    for row in data:
+        x, y = row[:-1], row[-1]
+        y_pred = 1 if sum(w[i]*x[i] for i in range(4)) + b >= 0 else -1
+        if y_pred != y:
+            for i in range(4):
+                w[i] += lr * y * x[i]
+            b += lr * y
+test = [5.0, 3.6, 1.4, 0.2]
+output = 1 if sum(w[i]*test[i] for i in range(4)) + b >= 0 else -1
+print("Predicted Class:", "Setosa" if output == 1 else "Versicolor")
